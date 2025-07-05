@@ -7,9 +7,7 @@ window.addEventListener("load", () => {
 function setEventListenerToSmallImage() {
     console.log("hoge");
     const small_imgs = document.querySelectorAll("[role=\"presentation\"] img"); // default size image(s)
-    small_imgs.forEach((img) => {
-        img.addEventListener("click", changeImageSize)}
-    );
+    small_imgs.forEach((img) => img.addEventListener("click", changeImageSize));
 }
 
 function changeImageSize() {
