@@ -1,0 +1,14 @@
+{
+  "name": "pixiv extension",
+  "description": "extension for pixiv full sized picture display",
+  "version": "0.1",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "js": ["jquery-3.7.1.min.js","main.js"],
+      "matches": [
+        "https://www.pixiv.net/*"
+      ]
+    }
+  ]
+}
