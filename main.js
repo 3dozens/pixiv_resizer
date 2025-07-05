@@ -5,19 +5,13 @@ window.addEventListener("load", () => {
 });
 
 function setEventListenerToSmallImage() {
-    const img_small = document.querySelectorAll("[src*=img-master]")[0]; // default picture
-    img_small.addEventListener("click", changeImagesize)
+    const small_imgs = document.querySelectorAll("[role=\"presentation\"] img"); // default size image(s)
+    small_imgs.forEach((img) => {
+        img.addEventListener("click", changeImageSize)}
+    );
 }
 
-function setupMutationObserverForPageTransition() {
-    const body = document.querySelectorAll("body")[0];
-    console.log(body);
-    const config = { childList: true, subtree: true };
-    const mo = new MutationObserver(() => setEventListenerToSmallImage());
-    mo.observe(body, config);    
-}
-
-function changeImagesize() {
+function changeImageSize() {
     setTimeout(() => {
         const img_big = document.querySelectorAll("[src*=img-original]")[0]; // original resolution picture
         const org_width  = img_big.getAttribute('width');
@@ -43,8 +37,16 @@ function changeImagesize() {
         }
         console.log("changed width  = " + mod_width);
         console.log("changed height = " + mod_height);
-    
+        
         img_big.setAttribute('width', mod_width);
-        img_big.setAttribute('height', mod_height);
+        img_big.setAttribute('height', mod_height);       
     },100);
+}
+
+function setupMutationObserverForPageTransition() {
+    const body = document.querySelectorAll("body")[0];
+    console.log(body);
+    const config = { childList: true, subtree: true };
+    const mo = new MutationObserver(setEventListenerToSmallImage);
+    mo.observe(body, config);    
 }
