@@ -1,26 +1,39 @@
-window.addEventListener("load", function(e) {
-    console.log("pixiv display extension activated");
-    var img_small = document.querySelectorAll("[src*=img-master]")[0]; // default picture
-    img_small.addEventListener("click", changeImagesize)
+window.addEventListener("load", () => {
+    setEventListenerToSmallImage();
+    setupMutationObserverForPageTransition();
+    console.log("pixiv display extension activated");    
 });
 
+function setEventListenerToSmallImage() {
+    const img_small = document.querySelectorAll("[src*=img-master]")[0]; // default picture
+    img_small.addEventListener("click", changeImagesize)
+}
+
+function setupMutationObserverForPageTransition() {
+    const body = document.querySelectorAll("body")[0];
+    console.log(body);
+    const config = { childList: true, subtree: true };
+    const mo = new MutationObserver(() => setEventListenerToSmallImage());
+    mo.observe(body, config);    
+}
+
 function changeImagesize() {
-    setTimeout(function() {
+    setTimeout(() => {
         const img_big = document.querySelectorAll("[src*=img-original]")[0]; // original resolution picture
-        console.log(img_big);
         const org_width  = img_big.getAttribute('width');
         const org_height = img_big.getAttribute('height');
         const org_ratio  = org_height / org_width;
         const screen_ratio = window.innerHeight / window.innerWidth
-    
+        
+        console.log(img_big);
         console.log("original width  = " + org_width);
         console.log("original height = " + org_height);
         console.log("ratio = " + org_ratio);
         console.log("screen_ratio = " + screen_ratio);
         
         // calculate appropriate width and height for full screen
-        var mod_width;
-        var mod_height; 
+        let mod_width;
+        let mod_height; 
         if (org_ratio >= screen_ratio) {
             mod_height = window.innerHeight;
             mod_width  = window.innerHeight / org_ratio;
