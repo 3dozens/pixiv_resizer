@@ -1,6 +1,6 @@
 window.addEventListener("load", function(e) {
     console.log("pixiv display extension activated");
-    var img_small = document.querySelectorAll("[src*=img-master]")[0];
+    var img_small = document.querySelectorAll("[src*=img-master]")[0]; // default picture
     img_small.addEventListener("click", changeImagesize)
 });
 
@@ -21,7 +21,7 @@ function changeImagesize() {
         // calculate appropriate width and height for full screen
         var mod_width;
         var mod_height; 
-        if (org_ratio > screen_ratio) {
+        if (org_ratio >= screen_ratio) {
             mod_height = window.innerHeight;
             mod_width  = window.innerHeight / org_ratio;
         } else {
