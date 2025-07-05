@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
 });
 
 function setEventListenerToSmallImage() {
+    console.log("hoge");
     const small_imgs = document.querySelectorAll("[role=\"presentation\"] img"); // default size image(s)
     small_imgs.forEach((img) => {
         img.addEventListener("click", changeImageSize)}
@@ -44,9 +45,9 @@ function changeImageSize() {
 }
 
 function setupMutationObserverForPageTransition() {
-    const body = document.querySelectorAll("body")[0];
-    console.log(body);
+    const main_panel = document.querySelectorAll("figure")[1]; // 特定できるクラスやIDがないため2番目を取得している
+    console.log(main_panel);
     const config = { childList: true, subtree: true };
     const mo = new MutationObserver(setEventListenerToSmallImage);
-    mo.observe(body, config);    
+    mo.observe(main_panel, config);    
 }

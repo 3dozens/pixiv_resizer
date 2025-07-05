@@ -7,7 +7,7 @@
     {
       "js": ["jquery-3.7.1.min.js","main.js"],
       "matches": [
-        "https://www.pixiv.net/*"
+        "https://www.pixiv.net/artworks/*"
       ]
     }
   ]
