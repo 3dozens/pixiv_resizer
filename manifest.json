@@ -5,7 +5,7 @@
   "manifest_version": 3,
   "content_scripts": [
     {
-      "js": ["jquery-3.7.1.min.js","main.js"],
+      "js": ["main.js"],
       "matches": [
         "https://www.pixiv.net/artworks/*"
       ]

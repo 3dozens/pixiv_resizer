@@ -1,18 +1,21 @@
 window.addEventListener("load", () => {
-    setupMutationObserverForChangeImageSize();
-    // setupMutationObserverForPageTransition();
+    setupMutationObserver();
     console.log("pixiv display extension activated");    
 });
 
-function setupMutationObserverForChangeImageSize() {
-    const main_panel = document.querySelectorAll("body")[0]; // 特定できるクラスやIDがないため2番目を取得している
+function setupMutationObserver() {
+    const main_panel = document.querySelectorAll("body")[0];
     const config = { childList: true, subtree: true };
     const mo = new MutationObserver((mutationList) => {
         mutationList.forEach(m => {
-            m.addedNodes.forEach(n => {
-                if (n.innerHTML.includes("img-original"))
-                    changeImageSize();
-            });
+            if (m.addedNodes.length > 0) {
+                m.addedNodes.forEach(n => { // NodeListにはforEachはあるけどfilterやsomeはないらしい（なんで？）
+                    if (n.nodeName === '#text') return; // テキストノードはgetAttributeがなく例外が発生するのでcontinue
+                    if (n.innerHTML?.includes("img-original")  // img-original（拡大版画像）が追加されたらサイズを調整
+                        || n.getAttribute('src')?.includes("img-original")) // 複数枚画像の作品で拡大画像を前後に移動した際の対応
+                        changeImageSize();
+                });
+            }
         })
     });
     mo.observe(main_panel, config);
@@ -20,6 +23,7 @@ function setupMutationObserverForChangeImageSize() {
 
 function changeImageSize() {
     const img_big = document.querySelectorAll("[src*=img-original]")[0]; // original resolution picture
+    if (img_big === undefined) return;
     const org_width  = img_big.getAttribute('width');
     const org_height = img_big.getAttribute('height');
     const org_ratio  = org_height / org_width;
@@ -46,11 +50,4 @@ function changeImageSize() {
     
     img_big.setAttribute('width', mod_width);
     img_big.setAttribute('height', mod_height);       
-}
-
-function setupMutationObserverForPageTransition() {
-    // const main_panel = document.querySelectorAll("figure")[1]; // 特定できるクラスやIDがないため2番目を取得している
-    // const config = { childList: true, subtree: true };
-    // const mo = new MutationObserver(setEventListenerToSmallImage);
-    // mo.observe(main_panel, config);    
 }
